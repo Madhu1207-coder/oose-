@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Tracker</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to bottom, #7a78e6, #096890); 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            transition: background 0.5s ease;
+        }
+        
+        .weather-container {
+            background-color: rgba(255, 255, 255, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            width: 300px;
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .weather-container:hover {
+            transform: scale(1.05);
+        }
+        
+        .location {
+            margin-bottom: 20px;
+        }
+        
+        .location label {
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .location input {
+            padding: 10px;
+            margin-top: 5px;
+            width: 100%;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        
+        .location button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .location button:hover {
+            background-color: #45a049;
+        }
+        
+        .weather-info {
+            text-align: left;
+            margin-top: 20px;
+        }
+        
+        .weather-info p {
+            margin: 5px 0;
+            font-size: 14px;
+        }
+        
+        h2 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        #map {
+            height: 200px;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+    </style>
+    <!-- Include Leaflet.js for the map -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+</head>
+<body>
+    <div class="weather-container">
+        <h2>Weather Tracker</h2>
+        <div class="location">
+            <label for="location">Enter City, State, or District:</label>
+            <input type="text" id="location" placeholder="Enter city, state, or district">
+            <button onclick="getWeather()">Track Weather</button>
+        </div>
+        <div class="weather-info" id="weather-info">
+            <!-- Weather information will be displayed here -->
+        </div>
+        <div id="map"></div>
+    </div>
+
+    <script>
+        let map;  // Declare map variable globally for reuse
+        
+        function getWeather() {
+            const location = document.getElementById('location').value.trim(); // Trim whitespace from input
+            if (location === "") {
+                alert("Please enter a valid location");
+                return;
+            }
+
+            const apiKey = '0aa45cc1888e4693b3c144229241809'; // Replace with your WeatherAPI key
+            const apiUrl = `https://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${location}`;
+
+            fetch(apiUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Location not found');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    const weatherInfo = document.getElementById('weather-info');
+                    const { name, region, country, lat, lon } = data.location;
+                    const { temp_c, condition, humidity, pressure_mb, vis_km } = data.current;
+
+                    // Display weather data for any location entered
+                    weatherInfo.innerHTML = `
+                        <p><strong>Location:</strong> ${name}, ${region}, ${country}</p>
+                        <p><strong>Temperature:</strong> ${temp_c} &deg;C</p>
+                        <p><strong>Condition:</strong> ${condition.text}</p>
+                        <p><strong>Humidity:</strong> ${humidity}%</p>
+                        <p><strong>Pressure:</strong> ${pressure_mb} hPa</p>
+                        <p><strong>Visibility:</strong> ${vis_km} km</p>
+                    `;
+
+                    // Update background based on weather condition
+                    updateBackground(condition.text.toLowerCase());
+
+                    // Update map based on location
+                    updateMap(lat, lon, name, region, country);
+                })
+                .catch(error => {
+                    console.error('Error fetching weather data:', error);
+                    const weatherInfo = document.getElementById('weather-info');
+                    weatherInfo.innerHTML = `<p>${error.message}</p>`;
+                });
+        }
+
+        // Function to update the background based on the weather condition
+        function updateBackground(condition) {
+            if (condition.includes('sunny')) {
+                document.body.style.background = 'linear-gradient(to bottom, #f7d794, #f6b93b)';
+            } else if (condition.includes('rain') || condition.includes('shower')) {
+                document.body.style.background = 'linear-gradient(to bottom, #00c6ff, #0072ff)';
+            } else if (condition.includes('cloud')) {
+                document.body.style.background = 'linear-gradient(to bottom, #bdc3c7, #2c3e50)';
+            } else {
+                document.body.style.background = 'linear-gradient(to bottom, #7a78e6, #096890)';
+            }
+        }
+
+        // Function to update map and place marker
+        function updateMap(lat, lon, name, region, country) {
+            // Check if map is already initialized
+            if (map) {
+                map.setView([lat, lon], 10);  // Recenter the map to new location
+            } else {
+                // Initialize map using Leaflet.js
+                map = L.map('map').setView([lat, lon], 10);
+            }
+
+            // Add tile layer to the map
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+
+            // Add marker to the map
+            L.marker([lat, lon]).addTo(map)
+                .bindPopup(`<b>${name}</b><br>${region}, ${country}`)
+                .openPopup();
+        }
+    </script>
+</body>
+</html>
