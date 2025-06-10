@@ -1,6 +1,4 @@
-weather forecast website 
 
-![image](https://github.com/user-attachments/assets/4276fcb6-9eef-43cd-935d-b8f97d9722ff)
 
 # ⛅ Weather Forecast Web Application
 
@@ -79,15 +77,8 @@ Visit: `http://127.0.0.1:5000/`
 
 ---
 
-## 📸 Screenshots
-
-<table>
-  <tr>
-    <td><img src="https://github.com/Madhu1207-coder/oose-/raw/main/Oose%20(weatherforecast)/screenshot1.jpg" width="400" alt="Home View"></td>
-    <td><img src="https://github.com/Madhu1207-coder/oose-/raw/main/Oose%20(weatherforecast)/screenshot2.jpg" width="400" alt="Weather Output"></td>
-  </tr>
-</table>
-
+📸 Screenshots
+<table> <tr> <td><img src="https://github.com/user-attachments/assets/4276fcb6-9eef-43cd-935d-b8f97d9722ff" width="400" alt="Weather Forecast Output Screenshot"></td> </tr> </table>
 ---
 
 ## ✅ Use Cases
@@ -122,10 +113,3 @@ Have ideas to improve the project?
 
 ```
 
-Would you like me to:
-- Add a **GIF demo** instead of images?
-- Include **API key handling instructions**?
-- Set it up for deployment on **Render** or **GitHub Pages**?
-
-Let me know, and I’ll tailor it accordingly!
-```
