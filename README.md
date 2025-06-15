@@ -3,8 +3,8 @@
 # ⛅ Weather Forecast Web Application
 
 A modern, responsive, and interactive **Weather Forecast App** developed as part of the *Object Oriented Software Engineering (OOSE)* coursework. It provides accurate, real-time weather updates using reliable APIs and is built with a Python-Flask backend and a sleek Bootstrap-enhanced frontend.
+<p align="center"> <img src="https://i.pinimg.com/originals/28/9b/7a/289b7a9249d655c926aa1bf95be514b1.gif" alt="Thank You" width="250" style="border-radius: 50%; box-shadow: 0 4px 12px rgba(0,0,0,0.2);" /> </p>
 
----
 
 ## 📌 Key Features
 
@@ -111,5 +111,5 @@ Have ideas to improve the project?
 ✅ Fork this repo and submit a PR!
 🛠️ Contributions and feedback are always welcome!
 
-```
-
+🙌 Thank You
+<p align="center"> <img src="https://mir-s3-cdn-cf.behance.net/project_modules/fs/a2418f60390643.5a4b910e63f83.gif" alt="Thank You" width="250" style="border-radius: 50%; box-shadow: 0 4px 12px rgba(0,0,0,0.2);" /> </p>
